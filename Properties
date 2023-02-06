@@ -1,0 +1,3 @@
+username=root
+password=password
+connectionString=dbc:mysql://localhost3306/shoes?serverTimezone=UTC&useSSl=false&allowPublicRetrieval=true

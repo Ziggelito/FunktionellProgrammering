@@ -1,12 +1,16 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
 
 public class Main {
-    public  void connectToAndQueryDatabase (String username, String password) throws SQLException {
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost3306/shoes?serverTimezone=UTC&useSSl=false&allowPublicRetrieval=true", username, password);)
-        {
-
-        }
+    public static void props(String[] args) throws FileNotFoundException, IOException, SQLException {
+        Repository r = new Repository();
+         List<Customers> customersList = r.getCustomers();
+        customersList.forEach(c -> System.out.println());
     }
 }
