@@ -9,15 +9,15 @@ import java.util.Properties;
 public class Repository {
     List<Customers> getCustomers() throws IOException {
         Properties p = new Properties();
-        p.load(new FileInputStream("Properties"));
+        p.load(new FileInputStream("src/Properties"));
 
         try(Connection con = DriverManager.getConnection(
                 p.getProperty("connectionString"),
-                p.getProperty("name"),
+                p.getProperty("username"),
                 p.getProperty("password"));
 
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("select CustomerID, CustomerName, CustomerPass from Customers "))
+            ResultSet rs = stmt.executeQuery("select CustomerID, CustomerName, CustomerPass from Customers"))
 
         {
             List<Customers> customers = new ArrayList<>();
