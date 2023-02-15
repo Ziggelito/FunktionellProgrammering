@@ -13,6 +13,31 @@ public class Main {
         main.Program();
 
     }
+    void StoredStoreProcedure() throws IOException, SQLException {
+        Properties p = new Properties();
+        p.load(new FileInputStream("src/Properties"));
+
+        try(Connection con = DriverManager.getConnection(
+                p.getProperty("connectionString"),
+                p.getProperty("username"),
+                p.getProperty("password"));
+
+            CallableStatement cstmt = con.prepareCall("CALL AddToCart(?,?,?)");
+            cstmt.setInt(1,1);
+            cstmt.setInt(2,1);
+            cstmt.setInt(3,1);
+            cstmt.executeQuery();
+
+
+
+
+
+         catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
     public int inputInt(String text) {
         while (true) {
             Scanner scan;
@@ -52,8 +77,8 @@ public class Main {
                                 int password = Integer.parseInt(scan.nextLine());
                                 found = true;
                                 if (password == (customersList.get(i).getCustomerPass())) {
-                                    System.out.println("FUnkar");
-                                    //Skärm för att beställning
+                                    System.out.println("Funkar");
+                                    login(customersList.get(i));
                                 } else {
                                     System.out.println("Felaktigt lösenord.\n");
                                 }
@@ -69,6 +94,20 @@ public class Main {
                     default -> System.out.println("Felaktigt nummer");
                 }
             }
+    }
+
+    private void login (Customers customer) throws IOException {
+        boolean startLoop = true;
+        do {
+            int answer = inputInt("Välkommen " + customer.getCustomerName() +
+                    "\n1. Göra en beställning\n2. Logga ut");
+            switch (answer) {
+                //case (1) ->  beställningen;
+                case (2) -> startLoop = false;
+                default -> System.out.println("Felaktigt nummer");
+            }
+        }
+        while(startLoop);
     }
 
     }
