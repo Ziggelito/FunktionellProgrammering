@@ -11,18 +11,16 @@ public class Repository {
         Properties p = new Properties();
         p.load(new FileInputStream("src/Properties"));
 
-        try(Connection con = DriverManager.getConnection(
+        try (Connection con = DriverManager.getConnection(
                 p.getProperty("connectionString"),
                 p.getProperty("username"),
                 p.getProperty("password"));
 
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("select CustomerID, CustomerName, CustomerPass from Customers"))
-
-        {
+             Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery("select CustomerID, CustomerName, CustomerPass from Customers")) {
             List<Customers> customers = new ArrayList<>();
 
-            while (rs.next()){
+            while (rs.next()) {
                 Customers temp = new Customers();
                 int id = rs.getInt("CustomerID");
                 temp.setCustomerID(id);
@@ -48,18 +46,16 @@ public class Repository {
         Properties p = new Properties();
         p.load(new FileInputStream("src/Properties"));
 
-        try(Connection con = DriverManager.getConnection(
+        try (Connection con = DriverManager.getConnection(
                 p.getProperty("connectionString"),
                 p.getProperty("username"),
                 p.getProperty("password"));
 
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("select CategoryID, Category from Categories"))
-
-        {
+             Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery("select CategoryID, Category from Categories")) {
             List<Categories> categories = new ArrayList<>();
 
-            while (rs.next()){
+            while (rs.next()) {
                 Categories temp = new Categories();
                 int id = rs.getInt("CategoryID");
                 temp.setCategoryID(id);
@@ -78,22 +74,21 @@ public class Repository {
 
 
     }
+
     List<BelongsTo> getBelongsTo() throws IOException {
         Properties p = new Properties();
         p.load(new FileInputStream("src/Properties"));
 
-        try(Connection con = DriverManager.getConnection(
+        try (Connection con = DriverManager.getConnection(
                 p.getProperty("connectionString"),
                 p.getProperty("username"),
                 p.getProperty("password"));
 
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("select ProductID, CategoryID from BelongsTo"))
-
-        {
+             Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery("select ProductID, CategoryID from BelongsTo")) {
             List<BelongsTo> belongsTo = new ArrayList<>();
 
-            while (rs.next()){
+            while (rs.next()) {
                 BelongsTo temp = new BelongsTo();
                 int id = rs.getInt("ProductID");
                 temp.setProductID(id);
@@ -113,4 +108,140 @@ public class Repository {
 
     }
 
+    List<Includes> getIncludes() throws IOException {
+        Properties p = new Properties();
+        p.load(new FileInputStream("src/Properties"));
+
+        try (Connection con = DriverManager.getConnection(
+                p.getProperty("connectionString"),
+                p.getProperty("username"),
+                p.getProperty("password"));
+
+             Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery("select OrderID, ProductID from Includes")) {
+            List<Includes> includes = new ArrayList<>();
+
+            while (rs.next()) {
+                Includes temp = new Includes();
+                int id = rs.getInt("OrderID");
+                temp.setOrderID(id);
+                int catId = rs.getInt("ProductID");
+                temp.setProductID(catId);
+                includes.add(temp);
+
+
+            }
+
+            return includes;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
+    List<Orders> getOrders() throws IOException {
+        Properties p = new Properties();
+        p.load(new FileInputStream("src/Properties"));
+
+        try (Connection con = DriverManager.getConnection(
+                p.getProperty("connectionString"),
+                p.getProperty("username"),
+                p.getProperty("password"));
+
+             Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery("select OrderID, ProductID from Includes")) {
+            List<Orders> orders = new ArrayList<>();
+
+            while (rs.next()) {
+                Orders temp = new Orders();
+                int id = rs.getInt("OrderID");
+                temp.setOrderID(id);
+                int oDate = rs.getInt("OrderDate");
+                temp.setOrderDate(oDate);
+                String location = rs.getString("Location");
+                temp.setLocation(location);
+                orders.add(temp);
+
+
+            }
+
+            return orders;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    List<PlaceOrder> getPlaceOrder() throws IOException {
+        Properties p = new Properties();
+        p.load(new FileInputStream("src/Properties"));
+
+        try (Connection con = DriverManager.getConnection(
+                p.getProperty("connectionString"),
+                p.getProperty("username"),
+                p.getProperty("password"));
+
+             Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery("select OrderID, ProductID from Includes")) {
+            List<PlaceOrder> placeOrder = new ArrayList<>();
+
+            while (rs.next()) {
+                PlaceOrder temp = new PlaceOrder();
+                int id = rs.getInt("OrderID");
+                temp.setOrderID(id);
+                int cId = rs.getInt("CustomerID");
+                temp.setCustomerID(cId);
+                placeOrder.add(temp);
+
+
+            }
+
+            return placeOrder;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    List<Products> getProducts() throws IOException {
+        Properties p = new Properties();
+        p.load(new FileInputStream("src/Properties"));
+
+        try (Connection con = DriverManager.getConnection(
+                p.getProperty("connectionString"),
+                p.getProperty("username"),
+                p.getProperty("password"));
+
+             Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery("select OrderID, ProductID from Includes")) {
+            List<Products> products = new ArrayList<>();
+
+            while (rs.next()) {
+                Products temp = new Products();
+                int id = rs.getInt("ProductID");
+                temp.setProductID(id);
+                int size = rs.getInt("Size");
+                temp.setSize(size);
+                String col = rs.getString("Color");
+                temp.setColor(col);
+                int pri = rs.getInt("Price");
+                temp.setPrice(pri);
+                String bra = rs.getString("Brand");
+                temp.setBrand(bra);
+                int sto = rs.getInt("Stock");
+                temp.setStock(sto);
+
+                products.add(temp);
+
+
+            }
+
+            return products;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

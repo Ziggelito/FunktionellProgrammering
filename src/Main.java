@@ -22,11 +22,11 @@ public class Main {
                 p.getProperty("username"),
                 p.getProperty("password"))) {
 
-            CallableStatement cstmt = con.prepareCall("CALL AddToCart(?,?,?)");
-            cstmt.setInt(1, c.getCustomerID());
-            cstmt.setInt(2, 1);
-            cstmt.setInt(3, 1);
-            cstmt.executeQuery();
+            CallableStatement stmt = con.prepareCall("CALL AddToCart(?,?,?)");
+            stmt.setInt(1, c.getCustomerID());
+            stmt.setInt(2, 1);
+            stmt.setInt(3, 1);
+            stmt.executeQuery();
 
 
         }catch (SQLException e) {
