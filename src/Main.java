@@ -13,31 +13,29 @@ public class Main {
         main.Program();
 
     }
-    void StoredStoreProcedure() throws IOException, SQLException {
+    public void StoredStoreProcedure(Customers c, Orders o, Products pro) throws SQLException, IOException {
         Properties p = new Properties();
         p.load(new FileInputStream("src/Properties"));
 
         try(Connection con = DriverManager.getConnection(
                 p.getProperty("connectionString"),
                 p.getProperty("username"),
-                p.getProperty("password"));
+                p.getProperty("password"))) {
 
             CallableStatement cstmt = con.prepareCall("CALL AddToCart(?,?,?)");
-            cstmt.setInt(1,1);
-            cstmt.setInt(2,1);
-            cstmt.setInt(3,1);
+            cstmt.setInt(1, c.getCustomerID());
+            cstmt.setInt(2, 1);
+            cstmt.setInt(3, 1);
             cstmt.executeQuery();
 
 
-
-
-
-         catch (SQLException e) {
-            throw new RuntimeException(e);
+        }catch (SQLException e) {
+            e.printStackTrace();
         }
-
-
     }
+
+
+
     public int inputInt(String text) {
         while (true) {
             Scanner scan;

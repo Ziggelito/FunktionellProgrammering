@@ -44,4 +44,73 @@ public class Repository {
 
     }
 
+    List<Categories> getCategories() throws IOException {
+        Properties p = new Properties();
+        p.load(new FileInputStream("src/Properties"));
+
+        try(Connection con = DriverManager.getConnection(
+                p.getProperty("connectionString"),
+                p.getProperty("username"),
+                p.getProperty("password"));
+
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("select CategoryID, Category from Categories"))
+
+        {
+            List<Categories> categories = new ArrayList<>();
+
+            while (rs.next()){
+                Categories temp = new Categories();
+                int id = rs.getInt("CategoryID");
+                temp.setCategoryID(id);
+                String cat = rs.getString("Category");
+                temp.setCategory(cat);
+                categories.add(temp);
+
+
+            }
+
+            return categories;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+    List<BelongsTo> getBelongsTo() throws IOException {
+        Properties p = new Properties();
+        p.load(new FileInputStream("src/Properties"));
+
+        try(Connection con = DriverManager.getConnection(
+                p.getProperty("connectionString"),
+                p.getProperty("username"),
+                p.getProperty("password"));
+
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("select ProductID, CategoryID from BelongsTo"))
+
+        {
+            List<BelongsTo> belongsTo = new ArrayList<>();
+
+            while (rs.next()){
+                BelongsTo temp = new BelongsTo();
+                int id = rs.getInt("ProductID");
+                temp.setProductID(id);
+                int catId = rs.getInt("CategoryID");
+                temp.setCategoryID(catId);
+                belongsTo.add(temp);
+
+
+            }
+
+            return belongsTo;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
 }
