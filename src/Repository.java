@@ -215,7 +215,7 @@ public class Repository {
                 p.getProperty("password"));
 
              Statement stmt = con.createStatement();
-             ResultSet rs = stmt.executeQuery("select OrderID, ProductID from Includes")) {
+             ResultSet rs = stmt.executeQuery("select ProductID, Size, Color, Price, Brand, Stock FROM Products")) {
             List<Products> products = new ArrayList<>();
 
             while (rs.next()) {

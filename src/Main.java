@@ -24,8 +24,8 @@ public class Main {
 
             CallableStatement stmt = con.prepareCall("CALL AddToCart(?,?,?)");
             stmt.setInt(1, c.getCustomerID());
-            stmt.setInt(2, 1);
-            stmt.setInt(3, 1);
+            stmt.setInt(2, o.getOrderID());
+            stmt.setInt(3, pro.getProductID());
             stmt.executeQuery();
 
 
@@ -95,17 +95,56 @@ public class Main {
     }
 
     private void login (Customers customer) throws IOException {
+        Repository r = new Repository();
+        List<Products> products = r.getProducts();
+
         boolean startLoop = true;
         do {
             int answer = inputInt("Välkommen " + customer.getCustomerName() +
                     "\n1. Göra en beställning\n2. Logga ut");
             switch (answer) {
-                //case (1) ->  beställningen;
+                case (1) -> {
+                    Ordering(customer.getCustomerName());
+                    //for (int i = 0; i < products.size(); i++) {
+                        //System.out.println(products.get(i).getBrand());
+
+                    //}
+                }
                 case (2) -> startLoop = false;
                 default -> System.out.println("Felaktigt nummer");
             }
         }
         while(startLoop);
     }
+    private void Ordering (String customer) throws IOException {
+        Repository r = new Repository();
+        List<Products> productsList = r.getProducts();
+
+
+        int answer = inputInt("Vilken sko vill du beställa?:" +
+                "\n1." + productsList.get(0).getSize() + " " + productsList.get(0).getColor() +  " " + productsList.get(0).getPrice() + " " + productsList.get(0).getBrand() + " " + productsList.get(0).getStock() +
+                "\n2." + productsList.get(1).getSize() + " " + productsList.get(1).getColor() +  " " + productsList.get(1).getPrice() + " " + productsList.get(1).getBrand() + " " + productsList.get(1).getStock() +
+                "\n3." + productsList.get(2).getSize() + " " + productsList.get(2).getColor() +  " " + productsList.get(2).getPrice() + " " + productsList.get(2).getBrand() + " " + productsList.get(2).getStock() +
+                "\n3." + productsList.get(3).getSize() + " " + productsList.get(3).getColor() +  " " + productsList.get(3).getPrice() + " " + productsList.get(3).getBrand() + " " + productsList.get(3).getStock() +
+                "\n4." + productsList.get(4).getSize() + " " + productsList.get(4).getColor() +  " " + productsList.get(4).getPrice() + " " + productsList.get(4).getBrand() + " " + productsList.get(4).getStock() +
+                "\n5." + productsList.get(4).getSize() + " " + productsList.get(4).getColor() +  " " + productsList.get(4).getPrice() + " " + productsList.get(4).getBrand() + " " + productsList.get(4).getStock() +
+                "\n6." + productsList.get(5).getSize() + " " + productsList.get(5).getColor() +  " " + productsList.get(5).getPrice() + " " + productsList.get(5).getBrand() + " " + productsList.get(5).getStock() +
+                "\n7." + productsList.get(6).getSize() + " " + productsList.get(6).getColor() +  " " + productsList.get(6).getPrice() + " " + productsList.get(6).getBrand() + " " + productsList.get(6).getStock() +
+                "\n8." + productsList.get(7).getSize() + " " + productsList.get(7).getColor() +  " " + productsList.get(7).getPrice() + " " + productsList.get(7).getBrand() + " " + productsList.get(7).getStock()  );
+        switch (answer){
+            case (1) -> {}
+            case (2) -> {}
+            case (3) -> {}
+            case (4) -> {}
+            case (5) -> {}
+            case (6) -> {}
+            case (7) -> {}
+            case (8) -> {}
+            default -> System.out.println("Felaktigt nummer");
+        }
+
+    }
+
+
 
     }
