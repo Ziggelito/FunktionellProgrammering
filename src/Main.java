@@ -18,9 +18,11 @@ public class Main  {
         main.Program();
 
     }
-    public void StoredStoreProcedure() throws IOException {
+    public void StoredStoreProcedure(Customers customer,int ord, int pro) throws IOException {
         Properties p = new Properties();
         p.load(new FileInputStream("src/Properties"));
+        Repository r = new Repository();
+        List<Products> productsList = r.getProducts();
 
         try(Connection con = DriverManager.getConnection(
                 p.getProperty("connectionString"),
@@ -28,10 +30,11 @@ public class Main  {
                 p.getProperty("password"))) {
 
             CallableStatement stmt = con.prepareCall("CALL AddToCart(?,?,?)");
-            stmt.setInt(1, 1);
-            stmt.setInt(2, 7);
-            stmt.setInt(3, 1);
+            stmt.setInt(1, customer.getCustomerID());
+            stmt.setInt(2, ord);
+            stmt.setInt(3, pro);
             stmt.executeQuery();
+            System.out.println("Du har beställt produkt: Storlek: " +  productsList.get(pro).getSize() + " Färg: " + productsList.get(pro).getColor() +  " Pris: " + productsList.get(pro).getPrice() + "Kr Märke: " + productsList.get(pro).getBrand() + " Lager: " + productsList.get(pro).getStock() + "! Hoppas du blir nöjd med ditt köp." );
 
 
         }catch (SQLException e) {
@@ -123,27 +126,20 @@ public class Main  {
 
 
         int answer = inputInt("Vilken sko vill du beställa?:" +
-                "\n1." + productsList.get(0).getSize() + " " + productsList.get(0).getColor() +  " " + productsList.get(0).getPrice() + "Kr " + productsList.get(0).getBrand() + " " + productsList.get(0).getStock() +
-                "\n2." + productsList.get(1).getSize() + " " + productsList.get(1).getColor() +  " " + productsList.get(1).getPrice() + "Kr " + productsList.get(1).getBrand() + " " + productsList.get(1).getStock() +
-                "\n3." + productsList.get(2).getSize() + " " + productsList.get(2).getColor() +  " " + productsList.get(2).getPrice() + "Kr " + productsList.get(2).getBrand() + " " + productsList.get(2).getStock() +
-                "\n3." + productsList.get(3).getSize() + " " + productsList.get(3).getColor() +  " " + productsList.get(3).getPrice() + "Kr " + productsList.get(3).getBrand() + " " + productsList.get(3).getStock() +
-                "\n4." + productsList.get(4).getSize() + " " + productsList.get(4).getColor() +  " " + productsList.get(4).getPrice() + "Kr " + productsList.get(4).getBrand() + " " + productsList.get(4).getStock() +
-                "\n5." + productsList.get(4).getSize() + " " + productsList.get(4).getColor() +  " " + productsList.get(4).getPrice() + "Kr " + productsList.get(4).getBrand() + " " + productsList.get(4).getStock() +
-                "\n6." + productsList.get(5).getSize() + " " + productsList.get(5).getColor() +  " " + productsList.get(5).getPrice() + "Kr " + productsList.get(5).getBrand() + " " + productsList.get(5).getStock() +
-                "\n7." + productsList.get(6).getSize() + " " + productsList.get(6).getColor() +  " " + productsList.get(6).getPrice() + "Kr " + productsList.get(6).getBrand() + " " + productsList.get(6).getStock() +
-                "\n8." + productsList.get(7).getSize() + " " + productsList.get(7).getColor() +  " " + productsList.get(7).getPrice() + "Kr " + productsList.get(7).getBrand() + " " + productsList.get(7).getStock()  );
+                "\n1. Storlek: " + productsList.get(0).getSize() + " Färg: " + productsList.get(0).getColor() +  " Pris: " + productsList.get(0).getPrice() + "Kr " + productsList.get(0).getBrand() + " Lager: " + productsList.get(0).getStock() +
+                "\n2. Storlek: " + productsList.get(1).getSize() + " Färg: " + productsList.get(1).getColor() +  " Pris: " + productsList.get(1).getPrice() + "Kr " + productsList.get(1).getBrand() + " Lager: " + productsList.get(1).getStock() +
+                "\n3. Storlek: " + productsList.get(2).getSize() + " Färg: " + productsList.get(2).getColor() +  " Pris: " + productsList.get(2).getPrice() + "Kr " + productsList.get(2).getBrand() + " Lager: " + productsList.get(2).getStock() +
+                "\n3. Storlek: " + productsList.get(3).getSize() + " Färg: " + productsList.get(3).getColor() +  " Pris: " + productsList.get(3).getPrice() + "Kr " + productsList.get(3).getBrand() + " Lager: " + productsList.get(3).getStock() +
+                "\n4. Storlek: " + productsList.get(4).getSize() + " Färg: " + productsList.get(4).getColor() +  " Pris: " + productsList.get(4).getPrice() + "Kr " + productsList.get(4).getBrand() + " Lager: " + productsList.get(4).getStock() +
+                "\n5. Storlek: " + productsList.get(4).getSize() + " Färg: " + productsList.get(4).getColor() +  " Pris: " + productsList.get(4).getPrice() + "Kr " + productsList.get(4).getBrand() + " Lager: " + productsList.get(4).getStock() +
+                "\n6. Storlek: " + productsList.get(5).getSize() + " Färg: " + productsList.get(5).getColor() +  " Pris: " + productsList.get(5).getPrice() + "Kr " + productsList.get(5).getBrand() + " Lager: " + productsList.get(5).getStock() +
+                "\n7. Storlek: " + productsList.get(6).getSize() + " Färg: " + productsList.get(6).getColor() +  " Pris: " + productsList.get(6).getPrice() + "Kr " + productsList.get(6).getBrand() + " Lager: " + productsList.get(6).getStock() +
+                "\n8. Storlek: " + productsList.get(7).getSize() + " Färg: " + productsList.get(7).getColor() +  " Pris: " + productsList.get(7).getPrice() + "Kr " + productsList.get(7).getBrand() + " Lager: " + productsList.get(7).getStock()  );
 
 
         switch (answer){
 
-            case (1) -> StoredStoreProcedure();
-            case (2) -> System.out.println( "Grattis" + customer.getCustomerName() + "Du har beställt nummer 2");
-            case (3) -> System.out.println("Du har beställt nummer 3");
-            case (4) -> System.out.println("Du har beställt nummer 4");
-            case (5) -> System.out.println("Du har beställt nummer 5");
-            case (6) -> System.out.println("Du har beställt nummer 6");
-            case (7) -> System.out.println("Du har beställt nummer 7");
-            case (8) -> System.out.println("Du har beställt nummer 8");
+            case (1), (2), (3), (4), (5), (6), (7), (8) -> StoredStoreProcedure(customer, ordersList.size()+1,answer);
             default -> System.out.println("Felaktigt nummer");
         }
 
