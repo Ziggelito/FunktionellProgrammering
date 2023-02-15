@@ -1,8 +1,8 @@
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -151,14 +151,14 @@ public class Repository {
                 p.getProperty("password"));
 
              Statement stmt = con.createStatement();
-             ResultSet rs = stmt.executeQuery("select OrderID, ProductID from Includes")) {
+             ResultSet rs = stmt.executeQuery("select OrderID, OrderDate, Location FROM Orders")) {
             List<Orders> orders = new ArrayList<>();
 
             while (rs.next()) {
                 Orders temp = new Orders();
                 int id = rs.getInt("OrderID");
                 temp.setOrderID(id);
-                int oDate = rs.getInt("OrderDate");
+                Date oDate = rs.getDate("OrderDate");
                 temp.setOrderDate(oDate);
                 String location = rs.getString("Location");
                 temp.setLocation(location);

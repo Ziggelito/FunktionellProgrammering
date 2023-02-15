@@ -1,19 +1,24 @@
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.*;
-import java.util.*;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Properties;
+import java.util.Scanner;
 
 
-public class Main {
+public class Main  {
 
 
-    public static void main(String[] args) throws FileNotFoundException, IOException, SQLException {
+    public static void main(String[] args) throws IOException {
         Main main = new Main();
         main.Program();
 
     }
-    public void StoredStoreProcedure(Customers c, Orders o, Products pro) throws SQLException, IOException {
+    public void StoredStoreProcedure() throws IOException {
         Properties p = new Properties();
         p.load(new FileInputStream("src/Properties"));
 
@@ -23,9 +28,9 @@ public class Main {
                 p.getProperty("password"))) {
 
             CallableStatement stmt = con.prepareCall("CALL AddToCart(?,?,?)");
-            stmt.setInt(1, c.getCustomerID());
-            stmt.setInt(2, o.getOrderID());
-            stmt.setInt(3, pro.getProductID());
+            stmt.setInt(1, 1);
+            stmt.setInt(2, 7);
+            stmt.setInt(3, 1);
             stmt.executeQuery();
 
 
@@ -68,15 +73,15 @@ public class Main {
                         Scanner scan = new Scanner(System.in);
                         String name = scan.nextLine();
                         boolean found = false;
-                        for (int i = 0; i < customersList.size(); i++) {
-                            if (name.equalsIgnoreCase(customersList.get(i).getCustomerName())) {
-                                System.out.println(customersList.get(i).getCustomerPass());
+                        for (Customers customers : customersList) {
+                            if (name.equalsIgnoreCase(customers.getCustomerName())) {
+                                System.out.println(customers.getCustomerPass());
                                 System.out.println("Skriv in lösenord:");
                                 int password = Integer.parseInt(scan.nextLine());
                                 found = true;
-                                if (password == (customersList.get(i).getCustomerPass())) {
+                                if (password == (customers.getCustomerPass())) {
                                     System.out.println("Funkar");
-                                    login(customersList.get(i));
+                                    login(customers);
                                 } else {
                                     System.out.println("Felaktigt lösenord.\n");
                                 }
@@ -95,51 +100,50 @@ public class Main {
     }
 
     private void login (Customers customer) throws IOException {
-        Repository r = new Repository();
-        List<Products> products = r.getProducts();
 
         boolean startLoop = true;
         do {
             int answer = inputInt("Välkommen " + customer.getCustomerName() +
                     "\n1. Göra en beställning\n2. Logga ut");
             switch (answer) {
-                case (1) -> {
-                    Ordering(customer.getCustomerName());
-                    //for (int i = 0; i < products.size(); i++) {
-                        //System.out.println(products.get(i).getBrand());
-
-                    //}
-                }
+                case (1) -> Ordering(customer);
                 case (2) -> startLoop = false;
                 default -> System.out.println("Felaktigt nummer");
             }
         }
         while(startLoop);
     }
-    private void Ordering (String customer) throws IOException {
+    private void Ordering (Customers customer) throws IOException  {
         Repository r = new Repository();
         List<Products> productsList = r.getProducts();
+        List<Orders> ordersList = r.getOrders();
+
+
+
 
 
         int answer = inputInt("Vilken sko vill du beställa?:" +
-                "\n1." + productsList.get(0).getSize() + " " + productsList.get(0).getColor() +  " " + productsList.get(0).getPrice() + " " + productsList.get(0).getBrand() + " " + productsList.get(0).getStock() +
-                "\n2." + productsList.get(1).getSize() + " " + productsList.get(1).getColor() +  " " + productsList.get(1).getPrice() + " " + productsList.get(1).getBrand() + " " + productsList.get(1).getStock() +
-                "\n3." + productsList.get(2).getSize() + " " + productsList.get(2).getColor() +  " " + productsList.get(2).getPrice() + " " + productsList.get(2).getBrand() + " " + productsList.get(2).getStock() +
-                "\n3." + productsList.get(3).getSize() + " " + productsList.get(3).getColor() +  " " + productsList.get(3).getPrice() + " " + productsList.get(3).getBrand() + " " + productsList.get(3).getStock() +
-                "\n4." + productsList.get(4).getSize() + " " + productsList.get(4).getColor() +  " " + productsList.get(4).getPrice() + " " + productsList.get(4).getBrand() + " " + productsList.get(4).getStock() +
-                "\n5." + productsList.get(4).getSize() + " " + productsList.get(4).getColor() +  " " + productsList.get(4).getPrice() + " " + productsList.get(4).getBrand() + " " + productsList.get(4).getStock() +
-                "\n6." + productsList.get(5).getSize() + " " + productsList.get(5).getColor() +  " " + productsList.get(5).getPrice() + " " + productsList.get(5).getBrand() + " " + productsList.get(5).getStock() +
-                "\n7." + productsList.get(6).getSize() + " " + productsList.get(6).getColor() +  " " + productsList.get(6).getPrice() + " " + productsList.get(6).getBrand() + " " + productsList.get(6).getStock() +
-                "\n8." + productsList.get(7).getSize() + " " + productsList.get(7).getColor() +  " " + productsList.get(7).getPrice() + " " + productsList.get(7).getBrand() + " " + productsList.get(7).getStock()  );
+                "\n1." + productsList.get(0).getSize() + " " + productsList.get(0).getColor() +  " " + productsList.get(0).getPrice() + "Kr " + productsList.get(0).getBrand() + " " + productsList.get(0).getStock() +
+                "\n2." + productsList.get(1).getSize() + " " + productsList.get(1).getColor() +  " " + productsList.get(1).getPrice() + "Kr " + productsList.get(1).getBrand() + " " + productsList.get(1).getStock() +
+                "\n3." + productsList.get(2).getSize() + " " + productsList.get(2).getColor() +  " " + productsList.get(2).getPrice() + "Kr " + productsList.get(2).getBrand() + " " + productsList.get(2).getStock() +
+                "\n3." + productsList.get(3).getSize() + " " + productsList.get(3).getColor() +  " " + productsList.get(3).getPrice() + "Kr " + productsList.get(3).getBrand() + " " + productsList.get(3).getStock() +
+                "\n4." + productsList.get(4).getSize() + " " + productsList.get(4).getColor() +  " " + productsList.get(4).getPrice() + "Kr " + productsList.get(4).getBrand() + " " + productsList.get(4).getStock() +
+                "\n5." + productsList.get(4).getSize() + " " + productsList.get(4).getColor() +  " " + productsList.get(4).getPrice() + "Kr " + productsList.get(4).getBrand() + " " + productsList.get(4).getStock() +
+                "\n6." + productsList.get(5).getSize() + " " + productsList.get(5).getColor() +  " " + productsList.get(5).getPrice() + "Kr " + productsList.get(5).getBrand() + " " + productsList.get(5).getStock() +
+                "\n7." + productsList.get(6).getSize() + " " + productsList.get(6).getColor() +  " " + productsList.get(6).getPrice() + "Kr " + productsList.get(6).getBrand() + " " + productsList.get(6).getStock() +
+                "\n8." + productsList.get(7).getSize() + " " + productsList.get(7).getColor() +  " " + productsList.get(7).getPrice() + "Kr " + productsList.get(7).getBrand() + " " + productsList.get(7).getStock()  );
+
+
         switch (answer){
-            case (1) -> {}
-            case (2) -> {}
-            case (3) -> {}
-            case (4) -> {}
-            case (5) -> {}
-            case (6) -> {}
-            case (7) -> {}
-            case (8) -> {}
+
+            case (1) -> StoredStoreProcedure();
+            case (2) -> System.out.println( "Grattis" + customer.getCustomerName() + "Du har beställt nummer 2");
+            case (3) -> System.out.println("Du har beställt nummer 3");
+            case (4) -> System.out.println("Du har beställt nummer 4");
+            case (5) -> System.out.println("Du har beställt nummer 5");
+            case (6) -> System.out.println("Du har beställt nummer 6");
+            case (7) -> System.out.println("Du har beställt nummer 7");
+            case (8) -> System.out.println("Du har beställt nummer 8");
             default -> System.out.println("Felaktigt nummer");
         }
 

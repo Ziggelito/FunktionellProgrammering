@@ -1,6 +1,9 @@
+import java.util.Date;
+
+
 public class Orders {
     protected int OrderID;
-    protected int OrderDate;
+    protected Date OrderDate;
     protected String Location;
 
     public int getOrderID() {
@@ -11,11 +14,11 @@ public class Orders {
         OrderID = orderID;
     }
 
-    public int getOrderDate() {
+    public Date getOrderDate() {
         return OrderDate;
     }
 
-    public void setOrderDate(int orderDate) {
+    public void setOrderDate(Date orderDate) {
         OrderDate = orderDate;
     }
 
